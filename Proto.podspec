@@ -133,6 +133,8 @@ Pod::Spec.new do |s|
 
   # s.requires_arc = true
   s.requires_arc = "Framework/Framework/**/Stream.m"
+  
+  s.pod_target_xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS" }
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # s.dependency "JSONKit", "~> 1.4"

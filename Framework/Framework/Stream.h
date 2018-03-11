@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Helpers/Helpers.h>
 #import <Protobuf/GPBProtocolBuffers.h>
-#import "Stream.h"
 
 @class ProtoMessage, ProtoPair;
 

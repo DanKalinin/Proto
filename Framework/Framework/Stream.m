@@ -6,7 +6,7 @@
 //  Copyright © 2018 Dan Kalinin. All rights reserved.
 //
 
-#import "Proto.h"
+#import "Stream.h"
 #import "Message.pbobjc.h"
 #import "Api.pbobjc.h"
 
