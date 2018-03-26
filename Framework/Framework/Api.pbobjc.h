@@ -27,9 +27,53 @@
 
 CF_EXTERN_C_BEGIN
 
+@class PB3FileLoad;
 @class PB3Person;
 
 NS_ASSUME_NONNULL_BEGIN
+
+#pragma mark - Enum PB3FileLoad_Operation
+
+typedef GPB_ENUM(PB3FileLoad_Operation) {
+  /**
+   * Value used if any message's field encounters a value that is not defined
+   * by this enum. The message will also have C functions to get/set the rawValue
+   * of the field.
+   **/
+  PB3FileLoad_Operation_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  PB3FileLoad_Operation_Up = 0,
+  PB3FileLoad_Operation_Down = 1,
+};
+
+GPBEnumDescriptor *PB3FileLoad_Operation_EnumDescriptor(void);
+
+/**
+ * Checks to see if the given value is defined by the enum or was not known at
+ * the time this source was generated.
+ **/
+BOOL PB3FileLoad_Operation_IsValidValue(int32_t value);
+
+#pragma mark - Enum PB3FileLoad_Phase
+
+typedef GPB_ENUM(PB3FileLoad_Phase) {
+  /**
+   * Value used if any message's field encounters a value that is not defined
+   * by this enum. The message will also have C functions to get/set the rawValue
+   * of the field.
+   **/
+  PB3FileLoad_Phase_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  PB3FileLoad_Phase_Begin = 0,
+  PB3FileLoad_Phase_Process = 1,
+  PB3FileLoad_Phase_End = 2,
+};
+
+GPBEnumDescriptor *PB3FileLoad_Phase_EnumDescriptor(void);
+
+/**
+ * Checks to see if the given value is defined by the enum or was not known at
+ * the time this source was generated.
+ **/
+BOOL PB3FileLoad_Phase_IsValidValue(int32_t value);
 
 #pragma mark - PB3ApiRoot
 
@@ -46,12 +90,68 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PB3ApiRoot : GPBRootObject
 @end
 
+#pragma mark - PB3FileLoad
+
+typedef GPB_ENUM(PB3FileLoad_FieldNumber) {
+  PB3FileLoad_FieldNumber_Operation = 1,
+  PB3FileLoad_FieldNumber_Phase = 2,
+  PB3FileLoad_FieldNumber_Handle = 3,
+  PB3FileLoad_FieldNumber_Path = 4,
+  PB3FileLoad_FieldNumber_Chunk = 5,
+  PB3FileLoad_FieldNumber_Digest = 6,
+  PB3FileLoad_FieldNumber_Ret = 15,
+};
+
+@interface PB3FileLoad : GPBMessage
+
+@property(nonatomic, readwrite) PB3FileLoad_Operation operation;
+
+@property(nonatomic, readwrite) PB3FileLoad_Phase phase;
+
+@property(nonatomic, readwrite) int32_t handle;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *path;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *chunk;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *digest;
+
+@property(nonatomic, readwrite, strong, null_resettable) PB3FileLoad *ret;
+/** Test to see if @c ret has been set. */
+@property(nonatomic, readwrite) BOOL hasRet;
+
+@end
+
+/**
+ * Fetches the raw value of a @c PB3FileLoad's @c operation property, even
+ * if the value was not defined by the enum at the time the code was generated.
+ **/
+int32_t PB3FileLoad_Operation_RawValue(PB3FileLoad *message);
+/**
+ * Sets the raw value of an @c PB3FileLoad's @c operation property, allowing
+ * it to be set to a value that was not defined by the enum at the time the code
+ * was generated.
+ **/
+void SetPB3FileLoad_Operation_RawValue(PB3FileLoad *message, int32_t value);
+
+/**
+ * Fetches the raw value of a @c PB3FileLoad's @c phase property, even
+ * if the value was not defined by the enum at the time the code was generated.
+ **/
+int32_t PB3FileLoad_Phase_RawValue(PB3FileLoad *message);
+/**
+ * Sets the raw value of an @c PB3FileLoad's @c phase property, allowing
+ * it to be set to a value that was not defined by the enum at the time the code
+ * was generated.
+ **/
+void SetPB3FileLoad_Phase_RawValue(PB3FileLoad *message, int32_t value);
+
 #pragma mark - PB3Divide
 
 typedef GPB_ENUM(PB3Divide_FieldNumber) {
   PB3Divide_FieldNumber_A = 1,
   PB3Divide_FieldNumber_B = 2,
-  PB3Divide_FieldNumber_Ret = 3,
+  PB3Divide_FieldNumber_Ret = 15,
 };
 
 @interface PB3Divide : GPBMessage
@@ -88,7 +188,7 @@ typedef GPB_ENUM(PB3Person_FieldNumber) {
 
 typedef GPB_ENUM(PB3GetParent_FieldNumber) {
   PB3GetParent_FieldNumber_Person = 1,
-  PB3GetParent_FieldNumber_Ret = 2,
+  PB3GetParent_FieldNumber_Ret = 15,
 };
 
 @interface PB3GetParent : GPBMessage

@@ -43,6 +43,209 @@ static GPBFileDescriptor *PB3ApiRoot_FileDescriptor(void) {
   return descriptor;
 }
 
+#pragma mark - PB3FileLoad
+
+@implementation PB3FileLoad
+
+@dynamic operation;
+@dynamic phase;
+@dynamic handle;
+@dynamic path;
+@dynamic chunk;
+@dynamic digest;
+@dynamic hasRet, ret;
+
+typedef struct PB3FileLoad__storage_ {
+  uint32_t _has_storage_[1];
+  PB3FileLoad_Operation operation;
+  PB3FileLoad_Phase phase;
+  int32_t handle;
+  NSString *path;
+  NSData *chunk;
+  NSData *digest;
+  PB3FileLoad *ret;
+} PB3FileLoad__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "operation",
+        .dataTypeSpecific.enumDescFunc = PB3FileLoad_Operation_EnumDescriptor,
+        .number = PB3FileLoad_FieldNumber_Operation,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, operation),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor),
+        .dataType = GPBDataTypeEnum,
+      },
+      {
+        .name = "phase",
+        .dataTypeSpecific.enumDescFunc = PB3FileLoad_Phase_EnumDescriptor,
+        .number = PB3FileLoad_FieldNumber_Phase,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, phase),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor),
+        .dataType = GPBDataTypeEnum,
+      },
+      {
+        .name = "handle",
+        .dataTypeSpecific.className = NULL,
+        .number = PB3FileLoad_FieldNumber_Handle,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, handle),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeInt32,
+      },
+      {
+        .name = "path",
+        .dataTypeSpecific.className = NULL,
+        .number = PB3FileLoad_FieldNumber_Path,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, path),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "chunk",
+        .dataTypeSpecific.className = NULL,
+        .number = PB3FileLoad_FieldNumber_Chunk,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, chunk),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "digest",
+        .dataTypeSpecific.className = NULL,
+        .number = PB3FileLoad_FieldNumber_Digest,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, digest),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "ret",
+        .dataTypeSpecific.className = GPBStringifySymbol(PB3FileLoad),
+        .number = PB3FileLoad_FieldNumber_Ret,
+        .hasIndex = 6,
+        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, ret),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeMessage,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[PB3FileLoad class]
+                                     rootClass:[PB3ApiRoot class]
+                                          file:PB3ApiRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(PB3FileLoad__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
+int32_t PB3FileLoad_Operation_RawValue(PB3FileLoad *message) {
+  GPBDescriptor *descriptor = [PB3FileLoad descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:PB3FileLoad_FieldNumber_Operation];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetPB3FileLoad_Operation_RawValue(PB3FileLoad *message, int32_t value) {
+  GPBDescriptor *descriptor = [PB3FileLoad descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:PB3FileLoad_FieldNumber_Operation];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
+
+int32_t PB3FileLoad_Phase_RawValue(PB3FileLoad *message) {
+  GPBDescriptor *descriptor = [PB3FileLoad descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:PB3FileLoad_FieldNumber_Phase];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetPB3FileLoad_Phase_RawValue(PB3FileLoad *message, int32_t value) {
+  GPBDescriptor *descriptor = [PB3FileLoad descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:PB3FileLoad_FieldNumber_Phase];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
+
+#pragma mark - Enum PB3FileLoad_Operation
+
+GPBEnumDescriptor *PB3FileLoad_Operation_EnumDescriptor(void) {
+  static GPBEnumDescriptor *descriptor = NULL;
+  if (!descriptor) {
+    static const char *valueNames =
+        "Up\000Down\000";
+    static const int32_t values[] = {
+        PB3FileLoad_Operation_Up,
+        PB3FileLoad_Operation_Down,
+    };
+    GPBEnumDescriptor *worker =
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(PB3FileLoad_Operation)
+                                       valueNames:valueNames
+                                           values:values
+                                            count:(uint32_t)(sizeof(values) / sizeof(int32_t))
+                                     enumVerifier:PB3FileLoad_Operation_IsValidValue];
+    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+      [worker release];
+    }
+  }
+  return descriptor;
+}
+
+BOOL PB3FileLoad_Operation_IsValidValue(int32_t value__) {
+  switch (value__) {
+    case PB3FileLoad_Operation_Up:
+    case PB3FileLoad_Operation_Down:
+      return YES;
+    default:
+      return NO;
+  }
+}
+
+#pragma mark - Enum PB3FileLoad_Phase
+
+GPBEnumDescriptor *PB3FileLoad_Phase_EnumDescriptor(void) {
+  static GPBEnumDescriptor *descriptor = NULL;
+  if (!descriptor) {
+    static const char *valueNames =
+        "Begin\000Process\000End\000";
+    static const int32_t values[] = {
+        PB3FileLoad_Phase_Begin,
+        PB3FileLoad_Phase_Process,
+        PB3FileLoad_Phase_End,
+    };
+    GPBEnumDescriptor *worker =
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(PB3FileLoad_Phase)
+                                       valueNames:valueNames
+                                           values:values
+                                            count:(uint32_t)(sizeof(values) / sizeof(int32_t))
+                                     enumVerifier:PB3FileLoad_Phase_IsValidValue];
+    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+      [worker release];
+    }
+  }
+  return descriptor;
+}
+
+BOOL PB3FileLoad_Phase_IsValidValue(int32_t value__) {
+  switch (value__) {
+    case PB3FileLoad_Phase_Begin:
+    case PB3FileLoad_Phase_Process:
+    case PB3FileLoad_Phase_End:
+      return YES;
+    default:
+      return NO;
+  }
+}
+
 #pragma mark - PB3Divide
 
 @implementation PB3Divide
