@@ -48,7 +48,7 @@ static GPBFileDescriptor *PB3ApiRoot_FileDescriptor(void) {
 @implementation PB3FileLoad
 
 @dynamic operation;
-@dynamic phase;
+@dynamic command;
 @dynamic handle;
 @dynamic path;
 @dynamic chunk;
@@ -58,7 +58,7 @@ static GPBFileDescriptor *PB3ApiRoot_FileDescriptor(void) {
 typedef struct PB3FileLoad__storage_ {
   uint32_t _has_storage_[1];
   PB3FileLoad_Operation operation;
-  PB3FileLoad_Phase phase;
+  PB3FileLoad_Command command;
   int32_t handle;
   NSString *path;
   NSData *chunk;
@@ -82,11 +82,11 @@ typedef struct PB3FileLoad__storage_ {
         .dataType = GPBDataTypeEnum,
       },
       {
-        .name = "phase",
-        .dataTypeSpecific.enumDescFunc = PB3FileLoad_Phase_EnumDescriptor,
-        .number = PB3FileLoad_FieldNumber_Phase,
+        .name = "command",
+        .dataTypeSpecific.enumDescFunc = PB3FileLoad_Command_EnumDescriptor,
+        .number = PB3FileLoad_FieldNumber_Command,
         .hasIndex = 1,
-        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, phase),
+        .offset = (uint32_t)offsetof(PB3FileLoad__storage_, command),
         .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor),
         .dataType = GPBDataTypeEnum,
       },
@@ -164,15 +164,15 @@ void SetPB3FileLoad_Operation_RawValue(PB3FileLoad *message, int32_t value) {
   GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
 }
 
-int32_t PB3FileLoad_Phase_RawValue(PB3FileLoad *message) {
+int32_t PB3FileLoad_Command_RawValue(PB3FileLoad *message) {
   GPBDescriptor *descriptor = [PB3FileLoad descriptor];
-  GPBFieldDescriptor *field = [descriptor fieldWithNumber:PB3FileLoad_FieldNumber_Phase];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:PB3FileLoad_FieldNumber_Command];
   return GPBGetMessageInt32Field(message, field);
 }
 
-void SetPB3FileLoad_Phase_RawValue(PB3FileLoad *message, int32_t value) {
+void SetPB3FileLoad_Command_RawValue(PB3FileLoad *message, int32_t value) {
   GPBDescriptor *descriptor = [PB3FileLoad descriptor];
-  GPBFieldDescriptor *field = [descriptor fieldWithNumber:PB3FileLoad_FieldNumber_Phase];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:PB3FileLoad_FieldNumber_Command];
   GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
 }
 
@@ -210,24 +210,25 @@ BOOL PB3FileLoad_Operation_IsValidValue(int32_t value__) {
   }
 }
 
-#pragma mark - Enum PB3FileLoad_Phase
+#pragma mark - Enum PB3FileLoad_Command
 
-GPBEnumDescriptor *PB3FileLoad_Phase_EnumDescriptor(void) {
+GPBEnumDescriptor *PB3FileLoad_Command_EnumDescriptor(void) {
   static GPBEnumDescriptor *descriptor = NULL;
   if (!descriptor) {
     static const char *valueNames =
-        "Begin\000Process\000End\000";
+        "Begin\000Process\000End\000Cancel\000";
     static const int32_t values[] = {
-        PB3FileLoad_Phase_Begin,
-        PB3FileLoad_Phase_Process,
-        PB3FileLoad_Phase_End,
+        PB3FileLoad_Command_Begin,
+        PB3FileLoad_Command_Process,
+        PB3FileLoad_Command_End,
+        PB3FileLoad_Command_Cancel,
     };
     GPBEnumDescriptor *worker =
-        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(PB3FileLoad_Phase)
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(PB3FileLoad_Command)
                                        valueNames:valueNames
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
-                                     enumVerifier:PB3FileLoad_Phase_IsValidValue];
+                                     enumVerifier:PB3FileLoad_Command_IsValidValue];
     if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
       [worker release];
     }
@@ -235,11 +236,12 @@ GPBEnumDescriptor *PB3FileLoad_Phase_EnumDescriptor(void) {
   return descriptor;
 }
 
-BOOL PB3FileLoad_Phase_IsValidValue(int32_t value__) {
+BOOL PB3FileLoad_Command_IsValidValue(int32_t value__) {
   switch (value__) {
-    case PB3FileLoad_Phase_Begin:
-    case PB3FileLoad_Phase_Process:
-    case PB3FileLoad_Phase_End:
+    case PB3FileLoad_Command_Begin:
+    case PB3FileLoad_Command_Process:
+    case PB3FileLoad_Command_End:
+    case PB3FileLoad_Command_Cancel:
       return YES;
     default:
       return NO;

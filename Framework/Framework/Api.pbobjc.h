@@ -53,27 +53,28 @@ GPBEnumDescriptor *PB3FileLoad_Operation_EnumDescriptor(void);
  **/
 BOOL PB3FileLoad_Operation_IsValidValue(int32_t value);
 
-#pragma mark - Enum PB3FileLoad_Phase
+#pragma mark - Enum PB3FileLoad_Command
 
-typedef GPB_ENUM(PB3FileLoad_Phase) {
+typedef GPB_ENUM(PB3FileLoad_Command) {
   /**
    * Value used if any message's field encounters a value that is not defined
    * by this enum. The message will also have C functions to get/set the rawValue
    * of the field.
    **/
-  PB3FileLoad_Phase_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
-  PB3FileLoad_Phase_Begin = 0,
-  PB3FileLoad_Phase_Process = 1,
-  PB3FileLoad_Phase_End = 2,
+  PB3FileLoad_Command_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  PB3FileLoad_Command_Begin = 0,
+  PB3FileLoad_Command_Process = 1,
+  PB3FileLoad_Command_End = 2,
+  PB3FileLoad_Command_Cancel = 3,
 };
 
-GPBEnumDescriptor *PB3FileLoad_Phase_EnumDescriptor(void);
+GPBEnumDescriptor *PB3FileLoad_Command_EnumDescriptor(void);
 
 /**
  * Checks to see if the given value is defined by the enum or was not known at
  * the time this source was generated.
  **/
-BOOL PB3FileLoad_Phase_IsValidValue(int32_t value);
+BOOL PB3FileLoad_Command_IsValidValue(int32_t value);
 
 #pragma mark - PB3ApiRoot
 
@@ -94,7 +95,7 @@ BOOL PB3FileLoad_Phase_IsValidValue(int32_t value);
 
 typedef GPB_ENUM(PB3FileLoad_FieldNumber) {
   PB3FileLoad_FieldNumber_Operation = 1,
-  PB3FileLoad_FieldNumber_Phase = 2,
+  PB3FileLoad_FieldNumber_Command = 2,
   PB3FileLoad_FieldNumber_Handle = 3,
   PB3FileLoad_FieldNumber_Path = 4,
   PB3FileLoad_FieldNumber_Chunk = 5,
@@ -106,7 +107,7 @@ typedef GPB_ENUM(PB3FileLoad_FieldNumber) {
 
 @property(nonatomic, readwrite) PB3FileLoad_Operation operation;
 
-@property(nonatomic, readwrite) PB3FileLoad_Phase phase;
+@property(nonatomic, readwrite) PB3FileLoad_Command command;
 
 @property(nonatomic, readwrite) int32_t handle;
 
@@ -135,16 +136,16 @@ int32_t PB3FileLoad_Operation_RawValue(PB3FileLoad *message);
 void SetPB3FileLoad_Operation_RawValue(PB3FileLoad *message, int32_t value);
 
 /**
- * Fetches the raw value of a @c PB3FileLoad's @c phase property, even
+ * Fetches the raw value of a @c PB3FileLoad's @c command property, even
  * if the value was not defined by the enum at the time the code was generated.
  **/
-int32_t PB3FileLoad_Phase_RawValue(PB3FileLoad *message);
+int32_t PB3FileLoad_Command_RawValue(PB3FileLoad *message);
 /**
- * Sets the raw value of an @c PB3FileLoad's @c phase property, allowing
+ * Sets the raw value of an @c PB3FileLoad's @c command property, allowing
  * it to be set to a value that was not defined by the enum at the time the code
  * was generated.
  **/
-void SetPB3FileLoad_Phase_RawValue(PB3FileLoad *message, int32_t value);
+void SetPB3FileLoad_Command_RawValue(PB3FileLoad *message, int32_t value);
 
 #pragma mark - PB3Divide
 
