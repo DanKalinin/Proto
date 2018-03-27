@@ -128,7 +128,7 @@
         GPBMessage *procedure = [message.message.message unpackMessageClass:class error:nil];
         NSString *signature = [NSString stringWithFormat:@"%@:%@:%@:", KeyPair, name, KeyCompletion];
         SEL selector = NSSelectorFromString(signature);
-        [self.endpoint.delegates performSelector:selector withObject:self withObject:procedure withObject:^(GPBMessage *result, NSError *error, ErrorBlock completion) {
+        [self.delegates performSelector:selector withObject:self withObject:procedure withObject:^(GPBMessage *result, NSError *error, ErrorBlock completion) {
             if (message.reply) {
                 ProtoMessage *msg = self.messageClass.new;
                 msg.replySerial = message.serial;
