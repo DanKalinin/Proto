@@ -41,8 +41,9 @@ typedef GPB_ENUM(PB3Load_Operation) {
    * of the field.
    **/
   PB3Load_Operation_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
-  PB3Load_Operation_Up = 0,
-  PB3Load_Operation_Down = 1,
+  PB3Load_Operation_OperationNone = 0,
+  PB3Load_Operation_OperationUp = 1,
+  PB3Load_Operation_OperationDown = 2,
 };
 
 GPBEnumDescriptor *PB3Load_Operation_EnumDescriptor(void);
@@ -62,10 +63,11 @@ typedef GPB_ENUM(PB3Load_Command) {
    * of the field.
    **/
   PB3Load_Command_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
-  PB3Load_Command_Begin = 0,
-  PB3Load_Command_Process = 1,
-  PB3Load_Command_End = 2,
-  PB3Load_Command_Cancel = 3,
+  PB3Load_Command_CommandNone = 0,
+  PB3Load_Command_CommandBegin = 1,
+  PB3Load_Command_CommandProcess = 2,
+  PB3Load_Command_CommandEnd = 3,
+  PB3Load_Command_CommandCancel = 4,
 };
 
 GPBEnumDescriptor *PB3Load_Command_EnumDescriptor(void);

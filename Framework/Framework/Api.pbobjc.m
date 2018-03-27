@@ -182,10 +182,11 @@ GPBEnumDescriptor *PB3Load_Operation_EnumDescriptor(void) {
   static GPBEnumDescriptor *descriptor = NULL;
   if (!descriptor) {
     static const char *valueNames =
-        "Up\000Down\000";
+        "OperationNone\000OperationUp\000OperationDown\000";
     static const int32_t values[] = {
-        PB3Load_Operation_Up,
-        PB3Load_Operation_Down,
+        PB3Load_Operation_OperationNone,
+        PB3Load_Operation_OperationUp,
+        PB3Load_Operation_OperationDown,
     };
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(PB3Load_Operation)
@@ -202,8 +203,9 @@ GPBEnumDescriptor *PB3Load_Operation_EnumDescriptor(void) {
 
 BOOL PB3Load_Operation_IsValidValue(int32_t value__) {
   switch (value__) {
-    case PB3Load_Operation_Up:
-    case PB3Load_Operation_Down:
+    case PB3Load_Operation_OperationNone:
+    case PB3Load_Operation_OperationUp:
+    case PB3Load_Operation_OperationDown:
       return YES;
     default:
       return NO;
@@ -216,12 +218,14 @@ GPBEnumDescriptor *PB3Load_Command_EnumDescriptor(void) {
   static GPBEnumDescriptor *descriptor = NULL;
   if (!descriptor) {
     static const char *valueNames =
-        "Begin\000Process\000End\000Cancel\000";
+        "CommandNone\000CommandBegin\000CommandProcess\000"
+        "CommandEnd\000CommandCancel\000";
     static const int32_t values[] = {
-        PB3Load_Command_Begin,
-        PB3Load_Command_Process,
-        PB3Load_Command_End,
-        PB3Load_Command_Cancel,
+        PB3Load_Command_CommandNone,
+        PB3Load_Command_CommandBegin,
+        PB3Load_Command_CommandProcess,
+        PB3Load_Command_CommandEnd,
+        PB3Load_Command_CommandCancel,
     };
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(PB3Load_Command)
@@ -238,10 +242,11 @@ GPBEnumDescriptor *PB3Load_Command_EnumDescriptor(void) {
 
 BOOL PB3Load_Command_IsValidValue(int32_t value__) {
   switch (value__) {
-    case PB3Load_Command_Begin:
-    case PB3Load_Command_Process:
-    case PB3Load_Command_End:
-    case PB3Load_Command_Cancel:
+    case PB3Load_Command_CommandNone:
+    case PB3Load_Command_CommandBegin:
+    case PB3Load_Command_CommandProcess:
+    case PB3Load_Command_CommandEnd:
+    case PB3Load_Command_CommandCancel:
       return YES;
     default:
       return NO;
