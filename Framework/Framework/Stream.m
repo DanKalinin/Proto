@@ -117,6 +117,20 @@
     }];
 }
 
+- (GPBMessage *)call:(GPBMessage *)procedure error:(NSError **)error {
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+    __block GPBMessage *msg;
+    __block NSError *err;
+    [self call:procedure completion:^(GPBMessage *message, NSError *error) {
+        msg = message;
+        err = error;
+        dispatch_group_leave(group);
+    }];
+    *error = err;
+    return msg;
+}
+
 #pragma mark - Pair
 
 - (void)pair:(ProtoPair *)pair didReceiveMessage:(ProtoMessage *)message {
