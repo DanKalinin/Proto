@@ -40,6 +40,6 @@ typedef void (^GPBMessageErrorCompletionBlock)(__kindof GPBMessage *message, NSE
 @interface ProtoPair : StreamPair
 
 - (void)call:(GPBMessage *)procedure completion:(GPBMessageErrorBlock)completion;
-- (GPBMessage *)call:(GPBMessage *)procedure error:(NSError **)error;
+- (__kindof GPBMessage *)call:(GPBMessage *)procedure error:(NSError **)error;
 
 @end
