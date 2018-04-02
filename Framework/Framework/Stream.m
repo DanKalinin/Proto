@@ -127,6 +127,7 @@
         err = error;
         dispatch_group_leave(group);
     }];
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
     *error = err;
     return msg;
 }
