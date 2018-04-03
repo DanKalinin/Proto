@@ -80,6 +80,25 @@
 
 
 
+@interface ProtoLoad ()
+
+@end
+
+
+
+@implementation ProtoLoad
+
+@end
+
+
+
+
+
+
+
+
+
+
 @interface ProtoPair ()
 
 @end
@@ -92,6 +111,7 @@
     self = [super initWithInputStream:inputStream outputStream:outputStream];
     if (self) {
         self.messageClass = ProtoMessage.class;
+        self.loadClass = ProtoLoad.class;
     }
     return self;
 }

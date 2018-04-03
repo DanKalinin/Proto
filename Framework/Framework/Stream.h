@@ -37,6 +37,19 @@ typedef void (^GPBMessageErrorCompletionBlock)(__kindof GPBMessage *message, NSE
 
 
 
+@interface ProtoLoad : StreamLoad
+
+@end
+
+
+
+
+
+
+
+
+
+
 @interface ProtoPair : StreamPair
 
 - (void)call:(GPBMessage *)procedure completion:(GPBMessageErrorBlock)completion;
