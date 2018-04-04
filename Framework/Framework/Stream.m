@@ -91,12 +91,18 @@
 - (void)main {
     [self updateState:OperationStateDidBegin];
     
-    while (!self.cancelled) {
-        break;
-    }
+    int32_t handle = (int32_t)self.parent.loadSequence.value;
+    [self.parent.loadSequence increment];
     
-    if (self.cancelled) {
-        
+    if (self.operation == StreamLoadOperationUp) {
+        PB3Load *upload = PB3Load.message;
+        upload.operation = PB3Load_Operation_OperationUp;
+        upload.command = PB3Load_Command_CommandBegin;
+        upload.handle = handle;
+        upload.digest = [self.data digest:DigestMD5];
+        NSError *error;
+        PB3Load *result = [self.parent call:upload error:&error];
+        NSLog(@"res - %@", result);
     } else {
         
     }
