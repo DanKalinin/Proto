@@ -101,8 +101,18 @@
         upload.handle = handle;
         upload.digest = [self.data digest:DigestMD5];
         NSError *error;
-        PB3Load *result = [self.parent call:upload error:&error];
-        NSLog(@"res - %@", result);
+        [self.parent call:upload error:&error];
+        if (error) {
+            [self.errors addObject:error];
+        } else {
+            while (!self.cancelled) {
+                if (self.data.length > self.parent.loadChunk) {
+                    // TODO: pop range
+                } else {
+                    break;
+                }
+            }
+        }
     } else {
         
     }
