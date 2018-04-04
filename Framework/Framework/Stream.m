@@ -88,6 +88,10 @@
 
 @implementation ProtoLoad
 
+- (void)main {
+    
+}
+
 @end
 
 
