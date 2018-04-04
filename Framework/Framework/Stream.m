@@ -89,8 +89,33 @@
 @implementation ProtoLoad
 
 - (void)main {
+    [self updateState:OperationStateDidBegin];
     
+    while (!self.cancelled) {
+        break;
+    }
+    
+    if (self.cancelled) {
+        
+    } else {
+        
+    }
+    
+    [self updateState:OperationStateDidEnd];
+    
+    
+    
+    
+//    PB3Authorize *authorize = PB3Authorize.message;
+//    authorize.code = self.ac.textFields[0].text;
+//    HUDController *hud = [HUDController.alloc initWithProgressHUD:self.hudIndeterminate errorHUD:self.hudText];
+//    [self.pair call:authorize completion:^(PB3Authorize *message, NSError *error) {
+//        [hud completeWithError:error];
+//        NSLog(@"result - %@ - %@", message, error);
+//    }];
 }
+
+#pragma mark - Proto
 
 @end
 
