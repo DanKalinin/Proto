@@ -180,6 +180,10 @@
         }
     }
     
+    if (self.cancelled) {
+        // TODO: Implement
+    }
+    
     [self updateState:OperationStateDidEnd];
 }
 
