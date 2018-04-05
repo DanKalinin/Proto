@@ -164,10 +164,10 @@
                     [self.errors addObject:error];
                     break;
                 } else {
-                    [self.data appendData:processResult.chunk];
-                    if (processResult.command == PB3Load_Command_CommandEnd) {
+                    [self.data appendData:processResult.ret.chunk];
+                    if (processResult.ret.command == PB3Load_Command_CommandEnd) {
                         NSData *digest = [self.data digest:DigestMD5];
-                        if ([digest isEqual:beginResult.digest]) {
+                        if ([digest isEqual:beginResult.ret.digest]) {
                             [self updateState:StreamLoadStateDidProcess];
                         } else {
                             NSError *error = [NSError errorWithDomain:HelpersErrorDomainDataCorrupted code:0 userInfo:nil];
