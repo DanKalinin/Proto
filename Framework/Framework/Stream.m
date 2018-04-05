@@ -183,8 +183,6 @@
     [self updateState:OperationStateDidEnd];
 }
 
-#pragma mark - Proto
-
 @end
 
 
