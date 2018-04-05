@@ -95,40 +95,57 @@
     [self.parent.loadSequence increment];
     
     if (self.operation == StreamLoadOperationUp) {
+        [self updateProgress:0];
+        NSError *error;
         PB3Load *upload = PB3Load.message;
         upload.operation = PB3Load_Operation_OperationUp;
         upload.command = PB3Load_Command_CommandBegin;
         upload.handle = handle;
         upload.digest = [self.data digest:DigestMD5];
-        NSError *error;
         [self.parent call:upload error:&error];
         if (error) {
             [self.errors addObject:error];
         } else {
+            [self updateState:StreamLoadStateDidInit];
             while (!self.cancelled) {
                 if (self.data.length > self.parent.loadChunk) {
-                    // TODO: pop range
+                    upload = PB3Load.message;
+                    upload.operation = PB3Load_Operation_OperationUp;
+                    upload.command = PB3Load_Command_CommandProcess;
+                    upload.handle = handle;
+                    upload.chunk = [self.data popLengthFromBegin:self.parent.loadChunk];
+                    [self.parent call:upload error:&error];
+                    if (error) {
+                        [self.errors addObject:error];
+                        break;
+                    } else {
+                        int64_t completedUnitCount = self.progress.totalUnitCount - self.data.length;
+                        [self updateProgress:completedUnitCount];
+                    }
                 } else {
+                    [self updateState:StreamLoadStateDidProcess];
+                    upload = PB3Load.message;
+                    upload.operation = PB3Load_Operation_OperationUp;
+                    upload.command = PB3Load_Command_CommandEnd;
+                    upload.handle = handle;
+                    upload.path = self.path;
+                    upload.chunk = self.data;
+                    [self.parent call:upload error:&error];
+                    if (error) {
+                        [self.errors addObject:error];
+                    } else {
+                        self.data.length = 0;
+                        [self updateProgress:self.progress.totalUnitCount];
+                    }
                     break;
                 }
             }
         }
     } else {
-        
+        self.progress.totalUnitCount = -1;
     }
     
     [self updateState:OperationStateDidEnd];
-    
-    
-    
-    
-//    PB3Authorize *authorize = PB3Authorize.message;
-//    authorize.code = self.ac.textFields[0].text;
-//    HUDController *hud = [HUDController.alloc initWithProgressHUD:self.hudIndeterminate errorHUD:self.hudText];
-//    [self.pair call:authorize completion:^(PB3Authorize *message, NSError *error) {
-//        [hud completeWithError:error];
-//        NSLog(@"result - %@ - %@", message, error);
-//    }];
 }
 
 #pragma mark - Proto
