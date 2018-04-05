@@ -283,4 +283,8 @@
 
 #pragma mark - Proto
 
+- (void)pair:(ProtoPair *)pair PB3Load:(PB3Load *)load completion:(GPBMessageErrorCompletionBlock)completion {
+    
+}
+
 @end
