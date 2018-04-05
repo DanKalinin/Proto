@@ -143,6 +143,41 @@
         }
     } else {
         self.progress.totalUnitCount = -1;
+        NSError *error;
+        PB3Load *download = PB3Load.message;
+        download.operation = PB3Load_Operation_OperationDown;
+        download.command = PB3Load_Command_CommandBegin;
+        download.handle = handle;
+        download.path = self.path;
+        PB3Load *beginResult = [self.parent call:download error:&error];
+        if (error) {
+            [self.errors addObject:error];
+        } else {
+            [self updateState:StreamLoadStateDidInit];
+            while (!self.cancelled) {
+                download = PB3Load.message;
+                download.operation = PB3Load_Operation_OperationDown;
+                download.command = PB3Load_Command_CommandProcess;
+                download.handle = handle;
+                PB3Load *processResult = [self.parent call:download error:&error];
+                if (error) {
+                    [self.errors addObject:error];
+                    break;
+                } else {
+                    [self.data appendData:processResult.chunk];
+                    if (processResult.command == PB3Load_Command_CommandEnd) {
+                        NSData *digest = [self.data digest:DigestMD5];
+                        if ([digest isEqual:beginResult.digest]) {
+                            [self updateState:StreamLoadStateDidProcess];
+                        } else {
+                            NSError *error = [NSError errorWithDomain:HelpersErrorDomainDataCorrupted code:0 userInfo:nil];
+                            [self.errors addObject:error];
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
     
     [self updateState:OperationStateDidEnd];
