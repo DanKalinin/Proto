@@ -254,8 +254,6 @@
 #pragma mark - Pair
 
 - (void)pair:(ProtoPair *)pair didReceiveMessage:(ProtoMessage *)message {
-    [super pair:pair didReceiveMessage:message];
-    
     NSString *name = [NSString stringWithFormat:@"%@%@", message.message.descriptor.file.objcPrefix, message.message.message.typeURL.lastPathComponent];
     Class class = NSClassFromString(name);
     if (class) {
