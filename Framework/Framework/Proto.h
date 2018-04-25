@@ -6,7 +6,7 @@
 //  Copyright © 2018 Dan Kalinin. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 FOUNDATION_EXPORT double ProtoVersionNumber;
 FOUNDATION_EXPORT const unsigned char ProtoVersionString[];
