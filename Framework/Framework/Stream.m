@@ -89,7 +89,7 @@
 @implementation ProtoLoad
 
 - (void)main {
-    [self updateState:OperationStateDidBegin];
+    [self updateState:HLPOperationStateDidBegin];
     
     int32_t handle = (int32_t)self.parent.loadSequence.value;
     [self.parent.loadSequence increment];
@@ -184,7 +184,7 @@
         // TODO: Implement
     }
     
-    [self updateState:OperationStateDidEnd];
+    [self updateState:HLPOperationStateDidEnd];
 }
 
 @end
