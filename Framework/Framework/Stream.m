@@ -94,7 +94,7 @@
     int32_t handle = (int32_t)self.parent.loadSequence.value;
     [self.parent.loadSequence increment];
     
-    if (self.operation == StreamLoadOperationUp) {
+    if (self.operation == HLPStreamLoadOperationUp) {
         [self updateProgress:0];
         NSError *error;
         PB3Load *upload = PB3Load.message;
@@ -106,7 +106,7 @@
         if (error) {
             [self.errors addObject:error];
         } else {
-            [self updateState:StreamLoadStateDidInit];
+            [self updateState:HLPStreamLoadStateDidInit];
             while (!self.cancelled) {
                 if (self.data.length > self.parent.loadChunk) {
                     upload = PB3Load.message;
@@ -123,7 +123,7 @@
                         [self updateProgress:completedUnitCount];
                     }
                 } else {
-                    [self updateState:StreamLoadStateDidProcess];
+                    [self updateState:HLPStreamLoadStateDidProcess];
                     upload = PB3Load.message;
                     upload.operation = PB3Load_Operation_OperationUp;
                     upload.command = PB3Load_Command_CommandEnd;
@@ -153,7 +153,7 @@
         if (error) {
             [self.errors addObject:error];
         } else {
-            [self updateState:StreamLoadStateDidInit];
+            [self updateState:HLPStreamLoadStateDidInit];
             while (!self.cancelled) {
                 download = PB3Load.message;
                 download.operation = PB3Load_Operation_OperationDown;
@@ -168,7 +168,7 @@
                     if (processResult.ret.command == PB3Load_Command_CommandEnd) {
                         NSData *digest = [self.data digest:DigestMD5];
                         if ([digest isEqual:beginResult.ret.digest]) {
-                            [self updateState:StreamLoadStateDidProcess];
+                            [self updateState:HLPStreamLoadStateDidProcess];
                         } else {
                             NSError *error = [NSError errorWithDomain:HelpersErrorDomainDataCorrupted code:0 userInfo:nil];
                             [self.errors addObject:error];

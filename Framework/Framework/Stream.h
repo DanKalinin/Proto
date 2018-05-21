@@ -24,7 +24,7 @@ typedef void (^GPBMessageErrorCompletionBlock)(__kindof GPBMessage *message, NSE
 
 
 
-@interface ProtoMessage : StreamMessage
+@interface ProtoMessage : HLPStreamMessage
 
 @end
 
@@ -37,7 +37,7 @@ typedef void (^GPBMessageErrorCompletionBlock)(__kindof GPBMessage *message, NSE
 
 
 
-@interface ProtoLoad : StreamLoad
+@interface ProtoLoad : HLPStreamLoad
 
 @end
 
@@ -50,7 +50,7 @@ typedef void (^GPBMessageErrorCompletionBlock)(__kindof GPBMessage *message, NSE
 
 
 
-@interface ProtoPair : StreamPair
+@interface ProtoPair : HLPStreamPair
 
 - (void)call:(GPBMessage *)procedure completion:(GPBMessageErrorBlock)completion;
 - (__kindof GPBMessage *)call:(GPBMessage *)procedure error:(NSError **)error;
