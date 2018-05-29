@@ -1,12 +1,12 @@
 //
-//  Proto.m
-//  Intercom
+//  ProtoStream.m
+//  Proto
 //
 //  Created by Dan Kalinin on 3/8/18.
 //  Copyright © 2018 Dan Kalinin. All rights reserved.
 //
 
-#import "Stream.h"
+#import "ProtoStream.h"
 #import "Message.pbobjc.h"
 #import "Api.pbobjc.h"
 

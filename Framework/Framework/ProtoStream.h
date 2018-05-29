@@ -1,6 +1,6 @@
 //
-//  Proto.h
-//  Intercom
+//  ProtoStream.h
+//  Proto
 //
 //  Created by Dan Kalinin on 3/8/18.
 //  Copyright © 2018 Dan Kalinin. All rights reserved.
