@@ -92,8 +92,8 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Framework/Framework/**/*.{h,m}"
-  s.exclude_files = "Framework/Framework/**/Info.plist"
+  s.source_files  = "Proto/**/*.{h,m}"
+  s.exclude_files = "Proto/**/Info.plist"
 
   # s.public_header_files = "Classes/**/*.h"
 
@@ -107,7 +107,7 @@ Pod::Spec.new do |s|
   #
 
   # s.resource  = "icon.png"
-  s.resources = "Framework/Framework/**/*.{json,plist}"
+  s.resources = "Proto/**/*.{json,plist}"
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
@@ -132,10 +132,7 @@ Pod::Spec.new do |s|
   #  you can include multiple dependencies to ensure it works.
 
   # s.requires_arc = true
-  # s.requires_arc = "Framework/Framework/**/Stream.m"
-  # s.requires_arc = "Framework/Framework/**/*.pbobjc.m"
-  # s.requires_arc = "Framework/Framework/**/$[^P][^B]*"
-  s.requires_arc = "Framework/Framework/**/PB3*.m"
+  s.requires_arc = "Proto/**/PB3*.m"
   
   s.pod_target_xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS" }
 
