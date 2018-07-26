@@ -33,8 +33,34 @@
     if (self.reading.cancelled) {
     } else if (self.reading.errors.count > 0) {
     } else {
-        
+        uint32_t length = *(uint32_t *)self.reading.data.bytes;
+        self.reading = [self.parent.streams.input readData:NSMutableData.data minLength:length maxLength:length timeout:self.parent.timeout];
+        [self.reading waitUntilFinished];
+        if (self.reading.cancelled) {
+        } else if (self.reading.errors.count > 0) {
+        } else {
+            NSError *error = nil;
+            PB3Payload *payload = [PB3Payload parseFromData:self.reading.data error:&error];
+            if (error) {
+                [self.errors addObject:error];
+            } else {
+                self.payload.serial = payload.serial;
+                if (payload.responseSerial.length > 0) {
+                    self.payload.responseSerial = payload.responseSerial;
+                    if (payload.error.length > 0) {
+                        
+                    } else {
+                        
+                    }
+                } else {
+                    self.payload.needsResponse = payload.needsResponse;
+                    self.payload.message = payload.message;
+                }
+            }
+        }
     }
+    
+    [self.errors addObjectsFromArray:self.reading.errors];
     
     [self updateState:HLPOperationStateDidEnd];
 }
