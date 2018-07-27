@@ -26,41 +26,55 @@
 @implementation PB3RPCPayloadReading
 
 - (void)main {
-    [self updateState:HLPOperationStateDidBegin];
+    self.progress.totalUnitCount = 2;
     
-//    self.reading = [self.parent.streams.input readData:NSMutableData.data minLength:4 maxLength:4 timeout:self.parent.timeout];
-//    [self.reading waitUntilFinished];
-//    if (self.reading.cancelled) {
-//    } else if (self.reading.errors.count > 0) {
-//    } else {
-//        uint32_t length = *(uint32_t *)self.reading.data.bytes;
-//        self.reading = [self.parent.streams.input readData:NSMutableData.data minLength:length maxLength:length timeout:self.parent.timeout];
-//        [self.reading waitUntilFinished];
-//        if (self.reading.cancelled) {
-//        } else if (self.reading.errors.count > 0) {
-//        } else {
-//            NSError *error = nil;
-//            PB3Payload *payload = [PB3Payload parseFromData:self.reading.data error:&error];
-//            if (error) {
-//                [self.errors addObject:error];
-//            } else {
-//                self.payload.serial = payload.serial;
-//                if (payload.responseSerial.length > 0) {
-//                    self.payload.responseSerial = payload.responseSerial;
-//                    if (payload.error.length > 0) {
-//
-//                    } else {
-//
-//                    }
-//                } else {
-//                    self.payload.needsResponse = payload.needsResponse;
-//                    self.payload.message = payload.message;
-//                }
-//            }
-//        }
-//    }
-//
-//    [self.errors addObjectsFromArray:self.reading.errors];
+    [self updateState:HLPOperationStateDidBegin];
+    [self updateProgress:0];
+    
+    NSMutableData *lengthData = NSMutableData.data;
+    
+    self.operation = [self.parent.streams.input readData:lengthData minLength:4 maxLength:4 timeout:self.parent.timeout];
+    [self.operation waitUntilFinished];
+    if (self.operation.cancelled) {
+    } else if (self.operation.errors.count > 0) {
+    } else {
+        [self updateProgress:1];
+        
+        NSMutableData *payloadData = NSMutableData.data;
+        uint32_t length = *(uint32_t *)lengthData.bytes;
+        
+        self.operation = [self.parent.streams.input readData:payloadData minLength:length maxLength:length timeout:self.parent.timeout];
+        [self.operation waitUntilFinished];
+        if (self.operation.cancelled) {
+        } else if (self.operation.errors.count > 0) {
+        } else {
+            [self updateProgress:2];
+            
+            NSError *error = nil;
+            PB3Payload *payload = [PB3Payload parseFromData:payloadData error:&error];
+            if (error) {
+                [self.errors addObject:error];
+            } else {
+                self.payload.serial = payload.serial;
+                if (payload.responseSerial.length > 0) {
+                    self.payload.responseSerial = payload.responseSerial;
+                    if (payload.error.length > 0) {
+                        NSArray<NSString *> *components = [payload.error componentsSeparatedByString:@":"];
+                        NSErrorDomain domain = components.firstObject;
+                        NSInteger code = components.lastObject.integerValue;
+                        self.payload.error = [NSError errorWithDomain:domain code:code userInfo:nil];
+                    } else {
+                        self.payload.response = payload.message;
+                    }
+                } else {
+                    self.payload.needsResponse = payload.needsResponse;
+                    self.payload.message = payload.message;
+                }
+            }
+        }
+    }
+    
+    [self.errors addObjectsFromArray:self.operation.errors];
     
     [self updateState:HLPOperationStateDidEnd];
 }
