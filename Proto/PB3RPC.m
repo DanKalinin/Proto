@@ -85,38 +85,51 @@
 @implementation PB3RPCPayloadWriting
 
 - (void)main {
-    [self updateState:HLPOperationStateDidBegin];
+    self.progress.totalUnitCount = 2;
     
-//    PB3Payload *payload = PB3Payload.message;
-//    payload.serial = self.payload.serial;
-//    if (self.payload.message) {
-//        GPBMessage *message = self.payload.message;
-//        GPBFieldDescriptor *descriptor = [message.descriptor fieldWithNumber:15];
-//        payload.needsResponse = (descriptor != nil);
-//        [payload.message mergeFrom:message];
-//    } else {
-//        payload.responseSerial = self.payload.responseSerial;
-//        if (self.payload.response) {
-//            [payload.message mergeFrom:self.payload.response];
-//        } else {
-//            payload.error = [NSString stringWithFormat:@"%@.%i", self.payload.error.domain, (int)self.payload.error.code];
-//        }
-//    }
-//
-//    NSMutableData *payloadData = payload.data.mutableCopy;
-//
-//    uint32_t length = (uint32_t)payloadData.length;
-//    NSMutableData *lengthData = [NSMutableData dataWithBytes:&length length:4];
-//    self.writing = [self.parent.streams.output writeData:lengthData timeout:self.parent.timeout];
-//    [self.writing waitUntilFinished];
-//    if (self.writing.cancelled) {
-//    } else if (self.writing.errors.count > 0) {
-//    } else {
-//        self.writing = [self.parent.streams.output writeData:payloadData timeout:self.parent.timeout];
-//        [self.writing waitUntilFinished];
-//    }
-//
-//    [self.errors addObjectsFromArray:self.writing.errors];
+    [self updateState:HLPOperationStateDidBegin];
+    [self updateProgress:0];
+    
+    PB3Payload *payload = PB3Payload.message;
+    payload.serial = self.payload.serial;
+    if (self.payload.message) {
+        GPBMessage *message = self.payload.message;
+        GPBFieldDescriptor *ret = [message.descriptor fieldWithNumber:15];
+        self.payload.needsResponse = (ret != nil);
+        
+        payload.needsResponse = self.payload.needsResponse;
+        [payload.message mergeFrom:self.payload.message];
+    } else {
+        payload.responseSerial = self.payload.responseSerial;
+        if (self.payload.response) {
+            [payload.message mergeFrom:self.payload.response];
+        } else {
+            payload.error = [NSString stringWithFormat:@"%@:%i", self.payload.error.domain, (int)self.payload.error.code];
+        }
+    }
+    
+    NSMutableData *payloadData = payload.data.mutableCopy;
+    
+    uint32_t length = (uint32_t)payloadData.length;
+    NSMutableData *lengthData = [NSMutableData dataWithBytes:&length length:4];
+    
+    self.operation = [self.parent.streams.output writeData:lengthData timeout:self.parent.timeout];
+    [self.operation waitUntilFinished];
+    if (self.operation.cancelled) {
+    } else if (self.operation.errors.count > 0) {
+    } else {
+        [self updateProgress:1];
+        
+        self.operation = [self.parent.streams.output writeData:payloadData timeout:self.parent.timeout];
+        [self.operation waitUntilFinished];
+        if (self.operation.cancelled) {
+        } else if (self.operation.errors.count > 0) {
+        } else {
+            [self updateProgress:2];
+        }
+    }
+    
+    [self.errors addObjectsFromArray:self.operation.errors];
     
     [self updateState:HLPOperationStateDidEnd];
 }
