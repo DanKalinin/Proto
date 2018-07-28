@@ -19,6 +19,9 @@
 
 @interface PB3RPCPayloadReading ()
 
+@property HLPStreamReading *lengthReading;
+@property HLPStreamReading *payloadReading;
+
 @end
 
 
@@ -33,20 +36,22 @@
     
     NSMutableData *lengthData = NSMutableData.data;
     
-    self.operation = [self.parent.streams.input readData:lengthData minLength:4 maxLength:4 timeout:self.parent.timeout];
-    [self.operation waitUntilFinished];
-    if (self.operation.cancelled) {
-    } else if (self.operation.errors.count > 0) {
+    self.operation = self.lengthReading = [self.parent.streams.input readData:lengthData minLength:4 maxLength:4 timeout:self.parent.timeout];
+    [self.lengthReading waitUntilFinished];
+    if (self.lengthReading.cancelled) {
+    } else if (self.lengthReading.errors.count > 0) {
+        [self.errors addObjectsFromArray:self.lengthReading.errors];
     } else {
         [self updateProgress:1];
         
         NSMutableData *payloadData = NSMutableData.data;
         uint32_t length = *(uint32_t *)lengthData.bytes;
         
-        self.operation = [self.parent.streams.input readData:payloadData minLength:length maxLength:length timeout:self.parent.timeout];
-        [self.operation waitUntilFinished];
-        if (self.operation.cancelled) {
-        } else if (self.operation.errors.count > 0) {
+        self.operation = self.payloadReading = [self.parent.streams.input readData:payloadData minLength:length maxLength:length timeout:self.parent.timeout];
+        [self.payloadReading waitUntilFinished];
+        if (self.payloadReading.cancelled) {
+        } else if (self.payloadReading.errors.count > 0) {
+            [self.errors addObjectsFromArray:self.payloadReading.errors];
         } else {
             [self updateProgress:2];
             
@@ -74,8 +79,6 @@
         }
     }
     
-    [self.errors addObjectsFromArray:self.operation.errors];
-    
     [self updateState:HLPOperationStateDidEnd];
 }
 
@@ -91,6 +94,9 @@
 
 
 @interface PB3RPCPayloadWriting ()
+
+@property HLPStreamWriting *lengthWriting;
+@property HLPStreamWriting *payloadWriting;
 
 @end
 
@@ -127,23 +133,23 @@
     uint32_t length = (uint32_t)payloadData.length;
     NSMutableData *lengthData = [NSMutableData dataWithBytes:&length length:4];
     
-    self.operation = [self.parent.streams.output writeData:lengthData timeout:self.parent.timeout];
-    [self.operation waitUntilFinished];
-    if (self.operation.cancelled) {
-    } else if (self.operation.errors.count > 0) {
+    self.operation = self.lengthWriting = [self.parent.streams.output writeData:lengthData timeout:self.parent.timeout];
+    [self.lengthWriting waitUntilFinished];
+    if (self.lengthWriting.cancelled) {
+    } else if (self.lengthWriting.errors.count > 0) {
+        [self.errors addObjectsFromArray:self.lengthWriting.errors];
     } else {
         [self updateProgress:1];
         
-        self.operation = [self.parent.streams.output writeData:payloadData timeout:self.parent.timeout];
-        [self.operation waitUntilFinished];
-        if (self.operation.cancelled) {
-        } else if (self.operation.errors.count > 0) {
+        self.operation = self.payloadWriting = [self.parent.streams.output writeData:payloadData timeout:self.parent.timeout];
+        [self.payloadWriting waitUntilFinished];
+        if (self.payloadWriting.cancelled) {
+        } else if (self.payloadWriting.errors.count > 0) {
+            [self.errors addObjectsFromArray:self.payloadWriting.errors];
         } else {
             [self updateProgress:2];
         }
     }
-    
-    [self.errors addObjectsFromArray:self.operation.errors];
     
     [self updateState:HLPOperationStateDidEnd];
 }

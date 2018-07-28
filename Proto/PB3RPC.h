@@ -20,6 +20,9 @@
 
 @interface PB3RPCPayloadReading : HLPRPCPayloadReading
 
+@property (readonly) HLPStreamReading *lengthReading;
+@property (readonly) HLPStreamReading *payloadReading;
+
 @end
 
 
@@ -32,6 +35,9 @@
 
 
 @interface PB3RPCPayloadWriting : HLPRPCPayloadWriting
+
+@property (readonly) HLPStreamWriting *lengthWriting;
+@property (readonly) HLPStreamWriting *payloadWriting;
 
 @end
 
