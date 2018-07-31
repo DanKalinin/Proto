@@ -9,6 +9,8 @@
 #import <Helpers/Helpers.h>
 #import "Payload.pbobjc.h"
 
+@class PB3RPCPayloadReading, PB3RPCPayloadWriting, PB3RPC;
+
 
 
 

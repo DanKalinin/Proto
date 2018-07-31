@@ -69,11 +69,20 @@
                         NSInteger code = components.lastObject.integerValue;
                         self.payload.error = [NSError errorWithDomain:domain code:code userInfo:nil];
                     } else {
-                        self.payload.response = payload.message;
+                        NSError *error = nil;
+                        self.payload.response = [payload.message unpackMessageClass:NSClassFromString(payload.message.typeURL.pathComponents.firstObject) error:&error];
+                        if (error) {
+                            [self.errors addObject:error];
+                        }
                     }
                 } else {
-                    self.payload.needsResponse = payload.needsResponse;
-                    self.payload.message = payload.message;
+                    NSError *error = nil;
+                    self.payload.message = [payload.message unpackMessageClass:NSClassFromString(payload.message.typeURL.pathComponents.firstObject) error:&error];
+                    if (error) {
+                        [self.errors addObject:error];
+                    } else {
+                        self.payload.needsResponse = payload.needsResponse;
+                    }
                 }
             }
         }
@@ -117,37 +126,48 @@
         GPBFieldDescriptor *ret = [message.descriptor fieldWithNumber:15];
         self.payload.needsResponse = (ret != nil);
         
-        payload.needsResponse = self.payload.needsResponse;
-        [payload.message mergeFrom:self.payload.message];
+        NSError *error = nil;
+        [payload.message packWithMessage:self.payload.message typeURLPrefix:NSStringFromClass([self.payload.message class]) error:&error];
+        if (error) {
+            [self.errors addObject:error];
+        } else {
+            payload.needsResponse = self.payload.needsResponse;
+        }
     } else {
         payload.responseSerial = self.payload.responseSerial;
         if (self.payload.response) {
-            [payload.message mergeFrom:self.payload.response];
+            NSError *error = nil;
+            [payload.message packWithMessage:self.payload.response typeURLPrefix:NSStringFromClass([self.payload.response class]) error:&error];
+            if (error) {
+                [self.errors addObject:error];
+            }
         } else {
             payload.error = [NSString stringWithFormat:@"%@:%i", self.payload.error.domain, (int)self.payload.error.code];
         }
     }
     
-    NSMutableData *payloadData = payload.data.mutableCopy;
-    
-    uint32_t length = (uint32_t)payloadData.length;
-    NSMutableData *lengthData = [NSMutableData dataWithBytes:&length length:4];
-    
-    self.operation = self.lengthWriting = [self.parent.streams.output writeData:lengthData timeout:self.parent.timeout];
-    [self.lengthWriting waitUntilFinished];
-    if (self.lengthWriting.cancelled) {
-    } else if (self.lengthWriting.errors.count > 0) {
-        [self.errors addObjectsFromArray:self.lengthWriting.errors];
-    } else {
-        [self updateProgress:1];
+    if (self.errors.count == 0) {
+        NSMutableData *payloadData = payload.data.mutableCopy;
         
-        self.operation = self.payloadWriting = [self.parent.streams.output writeData:payloadData timeout:self.parent.timeout];
-        [self.payloadWriting waitUntilFinished];
-        if (self.payloadWriting.cancelled) {
-        } else if (self.payloadWriting.errors.count > 0) {
-            [self.errors addObjectsFromArray:self.payloadWriting.errors];
+        uint32_t length = (uint32_t)payloadData.length;
+        NSMutableData *lengthData = [NSMutableData dataWithBytes:&length length:4];
+        
+        self.operation = self.lengthWriting = [self.parent.streams.output writeData:lengthData timeout:self.parent.timeout];
+        [self.lengthWriting waitUntilFinished];
+        if (self.lengthWriting.cancelled) {
+        } else if (self.lengthWriting.errors.count > 0) {
+            [self.errors addObjectsFromArray:self.lengthWriting.errors];
         } else {
-            [self updateProgress:2];
+            [self updateProgress:1];
+            
+            self.operation = self.payloadWriting = [self.parent.streams.output writeData:payloadData timeout:self.parent.timeout];
+            [self.payloadWriting waitUntilFinished];
+            if (self.payloadWriting.cancelled) {
+            } else if (self.payloadWriting.errors.count > 0) {
+                [self.errors addObjectsFromArray:self.payloadWriting.errors];
+            } else {
+                [self updateProgress:2];
+            }
         }
     }
     

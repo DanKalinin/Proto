@@ -14,3 +14,4 @@ FOUNDATION_EXPORT const unsigned char ProtoVersionString[];
 #import <Proto/PB3RPC.h>
 
 #import <Proto/Payload.pbobjc.h>
+#import <Proto/Messages.pbobjc.h>
