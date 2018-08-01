@@ -49,20 +49,20 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - PB3Payload
 
 typedef GPB_ENUM(PB3Payload_FieldNumber) {
-  PB3Payload_FieldNumber_Serial = 1,
-  PB3Payload_FieldNumber_ResponseSerial = 2,
-  PB3Payload_FieldNumber_NeedsResponse = 3,
+  PB3Payload_FieldNumber_Type = 1,
+  PB3Payload_FieldNumber_Serial = 2,
+  PB3Payload_FieldNumber_ResponseSerial = 3,
   PB3Payload_FieldNumber_Error = 4,
   PB3Payload_FieldNumber_Message = 5,
 };
 
 @interface PB3Payload : GPBMessage
 
-@property(nonatomic, readwrite, copy, null_resettable) NSString *serial;
+@property(nonatomic, readwrite) int32_t type;
 
-@property(nonatomic, readwrite, copy, null_resettable) NSString *responseSerial;
+@property(nonatomic, readwrite) int32_t serial;
 
-@property(nonatomic, readwrite) BOOL needsResponse;
+@property(nonatomic, readwrite) int32_t responseSerial;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *error;
 

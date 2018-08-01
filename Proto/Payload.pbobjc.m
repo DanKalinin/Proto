@@ -53,16 +53,17 @@ static GPBFileDescriptor *PB3PayloadRoot_FileDescriptor(void) {
 
 @implementation PB3Payload
 
+@dynamic type;
 @dynamic serial;
 @dynamic responseSerial;
-@dynamic needsResponse;
 @dynamic error;
 @dynamic hasMessage, message;
 
 typedef struct PB3Payload__storage_ {
   uint32_t _has_storage_[1];
-  NSString *serial;
-  NSString *responseSerial;
+  int32_t type;
+  int32_t serial;
+  int32_t responseSerial;
   NSString *error;
   GPBAny *message;
 } PB3Payload__storage_;
@@ -74,37 +75,37 @@ typedef struct PB3Payload__storage_ {
   if (!descriptor) {
     static GPBMessageFieldDescription fields[] = {
       {
+        .name = "type",
+        .dataTypeSpecific.className = NULL,
+        .number = PB3Payload_FieldNumber_Type,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(PB3Payload__storage_, type),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeInt32,
+      },
+      {
         .name = "serial",
         .dataTypeSpecific.className = NULL,
         .number = PB3Payload_FieldNumber_Serial,
-        .hasIndex = 0,
+        .hasIndex = 1,
         .offset = (uint32_t)offsetof(PB3Payload__storage_, serial),
         .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeString,
+        .dataType = GPBDataTypeInt32,
       },
       {
         .name = "responseSerial",
         .dataTypeSpecific.className = NULL,
         .number = PB3Payload_FieldNumber_ResponseSerial,
-        .hasIndex = 1,
+        .hasIndex = 2,
         .offset = (uint32_t)offsetof(PB3Payload__storage_, responseSerial),
         .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeString,
-      },
-      {
-        .name = "needsResponse",
-        .dataTypeSpecific.className = NULL,
-        .number = PB3Payload_FieldNumber_NeedsResponse,
-        .hasIndex = 2,
-        .offset = 3,  // Stored in _has_storage_ to save space.
-        .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeBool,
+        .dataType = GPBDataTypeInt32,
       },
       {
         .name = "error",
         .dataTypeSpecific.className = NULL,
         .number = PB3Payload_FieldNumber_Error,
-        .hasIndex = 4,
+        .hasIndex = 3,
         .offset = (uint32_t)offsetof(PB3Payload__storage_, error),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
@@ -113,7 +114,7 @@ typedef struct PB3Payload__storage_ {
         .name = "message",
         .dataTypeSpecific.className = GPBStringifySymbol(GPBAny),
         .number = PB3Payload_FieldNumber_Message,
-        .hasIndex = 5,
+        .hasIndex = 4,
         .offset = (uint32_t)offsetof(PB3Payload__storage_, message),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeMessage,
