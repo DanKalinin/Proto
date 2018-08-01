@@ -70,14 +70,14 @@
                         self.payload.error = [NSError errorWithDomain:domain code:code userInfo:nil];
                     } else {
                         NSError *error = nil;
-                        self.payload.response = [payload.message unpackMessageClass:NSClassFromString(payload.message.typeURL.pathComponents.firstObject) error:&error];
+                        self.payload.response = [payload.message unpackMessageClass:NSClassFromString([payload.message.typeURL.lastPathComponent stringByReplacingOccurrencesOfString:@"." withString:@""]) error:&error];
                         if (error) {
                             [self.errors addObject:error];
                         }
                     }
                 } else {
                     NSError *error = nil;
-                    self.payload.message = [payload.message unpackMessageClass:NSClassFromString(payload.message.typeURL.pathComponents.firstObject) error:&error];
+                    self.payload.message = [payload.message unpackMessageClass:NSClassFromString([payload.message.typeURL.lastPathComponent stringByReplacingOccurrencesOfString:@"." withString:@""]) error:&error];
                     if (error) {
                         [self.errors addObject:error];
                     } else {
@@ -127,7 +127,7 @@
         self.payload.needsResponse = (ret != nil);
         
         NSError *error = nil;
-        [payload.message packWithMessage:self.payload.message typeURLPrefix:NSStringFromClass([self.payload.message class]) error:&error];
+        [payload.message packWithMessage:self.payload.message error:&error];
         if (error) {
             [self.errors addObject:error];
         } else {
@@ -137,7 +137,7 @@
         payload.responseSerial = self.payload.responseSerial;
         if (self.payload.response) {
             NSError *error = nil;
-            [payload.message packWithMessage:self.payload.response typeURLPrefix:NSStringFromClass([self.payload.response class]) error:&error];
+            [payload.message packWithMessage:self.payload.response error:&error];
             if (error) {
                 [self.errors addObject:error];
             }

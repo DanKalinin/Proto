@@ -42,7 +42,7 @@ static GPBFileDescriptor *PB3PayloadRoot_FileDescriptor(void) {
   static GPBFileDescriptor *descriptor = NULL;
   if (!descriptor) {
     GPB_DEBUG_CHECK_RUNTIME_VERSIONS();
-    descriptor = [[GPBFileDescriptor alloc] initWithPackage:@""
+    descriptor = [[GPBFileDescriptor alloc] initWithPackage:@"PB3"
                                                  objcPrefix:@"PB3"
                                                      syntax:GPBFileSyntaxProto3];
   }
