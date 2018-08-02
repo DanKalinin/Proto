@@ -36,7 +36,7 @@
     
     NSMutableData *lengthData = NSMutableData.data;
 
-    self.operation = self.lengthReading = [self.parent.streams.input readData:lengthData minLength:4 maxLength:4 timeout:self.parent.timeout];
+    self.operation = self.lengthReading = [self.parent.streams.input readData:lengthData minLength:4 maxLength:4 timeout:DBL_MAX];
     [self.lengthReading waitUntilFinished];
     if (self.lengthReading.cancelled) {
     } else if (self.lengthReading.errors.count > 0) {
@@ -47,7 +47,7 @@
         NSMutableData *payloadData = NSMutableData.data;
         uint32_t length = *(uint32_t *)lengthData.bytes;
 
-        self.operation = self.payloadReading = [self.parent.streams.input readData:payloadData minLength:length maxLength:length timeout:self.parent.timeout];
+        self.operation = self.payloadReading = [self.parent.streams.input readData:payloadData minLength:length maxLength:length timeout:DBL_MAX];
         [self.payloadReading waitUntilFinished];
         if (self.payloadReading.cancelled) {
         } else if (self.payloadReading.errors.count > 0) {
