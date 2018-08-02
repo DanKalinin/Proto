@@ -61,7 +61,7 @@ static GPBFileDescriptor *PB3PayloadRoot_FileDescriptor(void) {
 
 typedef struct PB3Payload__storage_ {
   uint32_t _has_storage_[1];
-  int32_t type;
+  uint32_t type;
   int32_t serial;
   int32_t responseSerial;
   NSString *error;
@@ -81,7 +81,7 @@ typedef struct PB3Payload__storage_ {
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(PB3Payload__storage_, type),
         .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeInt32,
+        .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "serial",

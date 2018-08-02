@@ -58,7 +58,7 @@ typedef GPB_ENUM(PB3Payload_FieldNumber) {
 
 @interface PB3Payload : GPBMessage
 
-@property(nonatomic, readwrite) int32_t type;
+@property(nonatomic, readwrite) uint32_t type;
 
 @property(nonatomic, readwrite) int32_t serial;
 
