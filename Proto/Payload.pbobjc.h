@@ -60,9 +60,9 @@ typedef GPB_ENUM(PB3Payload_FieldNumber) {
 
 @property(nonatomic, readwrite) uint32_t type;
 
-@property(nonatomic, readwrite) int32_t serial;
+@property(nonatomic, readwrite) int64_t serial;
 
-@property(nonatomic, readwrite) int32_t responseSerial;
+@property(nonatomic, readwrite) int64_t responseSerial;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *error;
 

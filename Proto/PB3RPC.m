@@ -109,8 +109,8 @@
     
     PB3Payload *payload = PB3Payload.message;
     payload.type = self.payload.type;
-    payload.serial = (int32_t)self.payload.serial;
-    payload.responseSerial = (int32_t)self.payload.responseSerial;
+    payload.serial = self.payload.serial;
+    payload.responseSerial = self.payload.responseSerial;
     if (self.payload.error) {
         payload.error = [NSString stringWithFormat:@"%@:%i", self.payload.error.domain, (int)self.payload.error.code];
     } else if (self.payload.type == HLPRPCPayloadTypeReturn) {
