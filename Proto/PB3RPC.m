@@ -232,7 +232,7 @@
             } else {
                 NSString *name = [payload.message.typeURL.lastPathComponent stringByReplacingOccurrencesOfString:@"." withString:@""];
                 Class class = NSClassFromString(name);
-                if (self.type == HLPRPCPayloadTypeReturn) {
+                if (self.type == NSERPCOperationTypeReturn) {
                     self.response = [payload.message unpackMessageClass:class error:nil];
                 } else {
                     self.message = [payload.message unpackMessageClass:class error:nil];
@@ -255,6 +255,9 @@
 
 @interface GPBERPCWriting ()
 
+@property NSEStreamWriting *lengthWriting;
+@property NSEStreamWriting *writing;
+
 @end
 
 
@@ -262,7 +265,36 @@
 @implementation GPBERPCWriting
 
 - (void)write {
+    PB3Payload *payload = PB3Payload.message;
+    payload.type = self.type;
+    payload.serial = self.serial;
+    payload.responseSerial = self.responseSerial;
+    if (self.responseError) {
+        payload.error = [NSString stringWithFormat:@"%@:%i", self.responseError.domain, (int)self.responseError.code];
+    } else if (self.type == NSERPCOperationTypeReturn) {
+        [payload.message packWithMessage:self.response error:nil];
+    } else {
+        [payload.message packWithMessage:self.message error:nil];
+    }
     
+    NSData *data = payload.data;
+    
+    uint32_t length = (uint32_t)data.length;
+    NSData *lengthData = [NSData dataWithBytes:&length length:4];
+    
+    self.operation = self.lengthWriting = [self.parent.streams.output writeData:lengthData.mutableCopy timeout:self.parent.timeout];
+    [self.lengthWriting waitUntilFinished];
+    if (self.lengthWriting.isCancelled) {
+    } else if (self.lengthWriting.error) {
+        self.error = self.lengthWriting.error;
+    } else {
+        self.operation = self.writing = [self.parent.streams.output writeData:data.mutableCopy timeout:self.parent.timeout];
+        [self.writing waitUntilFinished];
+        if (self.writing.isCancelled) {
+        } else if (self.writing.error) {
+            self.error = self.writing.error;
+        }
+    }
 }
 
 @end

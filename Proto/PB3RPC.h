@@ -113,6 +113,9 @@
 
 @interface GPBERPCWriting : NSERPCWriting <GPBERPCWritingDelegate>
 
+@property (readonly) NSEStreamWriting *lengthWriting;
+@property (readonly) NSEStreamWriting *writing;
+
 @end
 
 
