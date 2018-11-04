@@ -55,3 +55,78 @@
 @interface PB3RPC : HLPRPC
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@class GPBERPCReading;
+@class GPBERPCWriting;
+@class GPBERPC;
+
+
+
+
+
+
+
+
+
+
+@protocol GPBERPCReadingDelegate <NSERPCReadingDelegate>
+
+@end
+
+
+
+@interface GPBERPCReading : NSERPCReading <GPBERPCReadingDelegate>
+
+@end
+
+
+
+
+
+
+
+
+
+
+@protocol GPBERPCWritingDelegate <NSERPCWritingDelegate>
+
+@end
+
+
+
+@interface GPBERPCWriting : NSERPCWriting <GPBERPCWritingDelegate>
+
+@end
+
+
+
+
+
+
+
+
+
+
+@protocol GPBERPCDelegate <NSERPCDelegate>
+
+@end
+
+
+
+@interface GPBERPC : NSERPC <GPBERPCDelegate>
+
+@end
