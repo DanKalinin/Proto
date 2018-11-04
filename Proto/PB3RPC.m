@@ -198,11 +198,49 @@
 
 @interface GPBERPCReading ()
 
+@property NSEStreamReading *lengthReading;
+@property NSEStreamReading *reading;
+
 @end
 
 
 
 @implementation GPBERPCReading
+
+- (void)read {
+    self.operation = self.lengthReading = [self.parent.streams.input readDataOfMinLength:4 maxLength:4 timeout:DBL_MAX];
+    [self.lengthReading waitUntilFinished];
+    if (self.lengthReading.isCancelled) {
+    } else if (self.lengthReading.error) {
+        self.error = self.lengthReading.error;
+    } else {
+        uint32_t length = *(uint32_t *)self.lengthReading.data.bytes;
+        
+        self.operation = self.reading = [self.parent.streams.input readDataOfMinLength:length maxLength:length timeout:DBL_MAX];
+        [self.reading waitUntilFinished];
+        if (self.reading.isCancelled) {
+        } else if (self.reading.error) {
+            self.error = self.reading.error;
+        } else {
+            PB3Payload *payload = [PB3Payload parseFromData:self.reading.data error:nil];
+            self.type = payload.type;
+            self.serial = payload.serial;
+            self.responseSerial = payload.responseSerial;
+            if (payload.error.length > 0) {
+                NSArray<NSString *> *components = [payload.error componentsSeparatedByString:@":"];
+                self.responseError = [NSError errorWithDomain:components.firstObject code:components.lastObject.integerValue userInfo:nil];
+            } else {
+                NSString *name = [payload.message.typeURL.lastPathComponent stringByReplacingOccurrencesOfString:@"." withString:@""];
+                Class class = NSClassFromString(name);
+                if (self.type == HLPRPCPayloadTypeReturn) {
+                    self.response = [payload.message unpackMessageClass:class error:nil];
+                } else {
+                    self.message = [payload.message unpackMessageClass:class error:nil];
+                }
+            }
+        }
+    }
+}
 
 @end
 
@@ -223,6 +261,10 @@
 
 @implementation GPBERPCWriting
 
+- (void)write {
+    
+}
+
 @end
 
 
@@ -241,5 +283,14 @@
 
 
 @implementation GPBERPC
+
+- (instancetype)initWithStreams:(NSEStreams *)streams {
+    self = [super initWithStreams:streams];
+    if (self) {
+        self.readingClass = GPBERPCReading.class;
+        self.writingClass = GPBERPCWriting.class;
+    }
+    return self;
+}
 
 @end

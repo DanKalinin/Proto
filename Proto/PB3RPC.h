@@ -91,6 +91,9 @@
 
 @interface GPBERPCReading : NSERPCReading <GPBERPCReadingDelegate>
 
+@property (readonly) NSEStreamReading *lengthReading;
+@property (readonly) NSEStreamReading *reading;
+
 @end
 
 
